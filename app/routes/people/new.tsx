@@ -27,13 +27,6 @@ export default createRoute(async (c) => {
         </div>
 
         <div>
-          <label>
-            Birthday
-            <input type="date" name="birthday" />
-          </label>
-        </div>
-
-        <div>
           <button type="submit">Create</button>
         </div>
       </form>
