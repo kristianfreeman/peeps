@@ -5,31 +5,38 @@ export default createRoute(async (c) => {
 
   return c.render(
     <>
-      <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <h1>Tracking {people.length} people</h1>
-        <a href="/people/new">New person</a>
+      <header class="flex justify-between items-center mb-4">
+        <h1 class="text-2xl font-bold mb-4">
+          Tracking {people.length} {people.length === 1 ? 'person' : 'people'}
+        </h1>
+
+        <a
+          class="transition-all bg-slate-900 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          href="/people/new"
+        >+ Add Person</a>
       </header>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Last contacted</th>
-          </tr>
-        </thead>
-        <tbody>
+      <div class="space-y-4">
+        <h2 class="text-xl font-bold mb-2">People</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {people.map((person) => (
-            <tr>
-              <td>
-                <a href={`/people/${person.id}`}>{person.name}</a>
-              </td>
-              <td>
-                {person.lastContacted && new Date(person.lastContacted).toLocaleDateString()}
-              </td>
-            </tr>
+            <a
+              class="transition-all rounded p-4 dark:bg-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-600 focus:outline-none focus:shadow-outline"
+              href={`/people/${person.id}`}
+              key={person.id}
+            >
+              <div>
+                <span class="font-bold">
+                  {person.name}
+                </span>
+
+                <p>{person.lastContacted ? `Last contacted ${person.lastContacted.toDateString()}` : 'Not yet contacted'}</p>
+              </div>
+            </a>
           ))}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </>,
   )
 })

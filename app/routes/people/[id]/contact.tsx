@@ -1,8 +1,7 @@
 import { createRoute } from 'honox/factory'
 
 export const POST = createRoute(async (c) => {
-  const body = await c.req.parseBody()
-  const { id } = body
+  const id = c.req.param('id')
   const idNumber = Number(id)
 
   await c.get('prisma').person.update({
@@ -10,5 +9,5 @@ export const POST = createRoute(async (c) => {
     data: { lastContacted: new Date(), },
   })
 
-  return c.redirect(`/${id}`)
+  return c.redirect(`/people/${id}`)
 })

@@ -14,17 +14,18 @@ export default createRoute(async (c) => {
     return c.render(
       <>
         <h1>Person not found</h1>
-        <a href="/people">Back</a>
+        <a href="/">Back</a>
       </>
     )
   }
 
   return c.render(
     <>
-      <h1>New connection</h1>
+      <h1>Update {person.name} Details</h1>
+
       <a href={`/people/${id}`}>Back</a>
 
-      <form method="post" action="/people">
+      <form method="post" action={`/people/${id}`}>
         <div>
           <label>
             Name
@@ -43,15 +44,6 @@ export default createRoute(async (c) => {
           <label>
             Phone
             <input type="tel" name="phone" value={person.phone ?? ""} />
-          </label>
-        </div>
-
-        <div>
-          <label>
-            Birthday
-            <input type="date" name="birthday"
-              value={person.birthday?.toISOString().split('T')[0] ?? ""}
-            />
           </label>
         </div>
 
