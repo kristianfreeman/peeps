@@ -11,3 +11,6 @@ yarn.lock
 pnpm-lock.yaml
 bun.lockb
 .env
+
+app/generated
+prisma/*.db

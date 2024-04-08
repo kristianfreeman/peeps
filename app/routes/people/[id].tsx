@@ -1,3 +1,4 @@
+import { methodOverride } from 'hono/method-override'
 import { createRoute } from 'honox/factory'
 import { Note, Url } from '@/generated/zod'
 
@@ -28,9 +29,16 @@ export default createRoute(async (c) => {
     <>
       <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <h1>{person.name}</h1>
-        <div>
+        <div style="display: flex;">
           <a href={`/people/${id}/edit`}>Edit</a>
-          <form method="post" action={`/contact`}>
+
+          <form action={`/people/${id}`} method="POST">
+            <input type="hidden" name="_method" value="DELETE" />
+            <input type="hidden" name="id" value={person.id} />
+            <button type="submit">Delete user</button>
+          </form>
+
+          <form method="post" action={`/people/${id}/contact`}>
             <input type="hidden" name="id" value={person.id} />
             <button type="submit">Contact</button>
           </form>
@@ -68,4 +76,14 @@ export default createRoute(async (c) => {
       ) : null}
     </>
   )
+})
+
+export const DELETE = createRoute(async (c) => {
+  const id = c.req.param('id')
+
+  await c.get('prisma').person.delete({
+    where: { id: Number(id) }
+  })
+
+  return c.redirect('/')
 })
