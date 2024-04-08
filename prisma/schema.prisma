@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+model Person {
+  id             Int      @id @default(autoincrement())
+  name           String
+  email          String?
+  phone          String?
+  lastContacted  DateTime? @map("last_contacted")
+  birthday       DateTime?
+  urls           Url[]
+  notes          Note[]
+
+  @@map("people")
+}
+
+model Url {
+  id          Int     @id @default(autoincrement())
+  personId    Int     @map("person_id")
+  url         String
+  description String?
+  person      Person  @relation(fields: [personId], references: [id])
+
+  @@map("urls")
+}
+
+model Note {
+  id         Int      @id @default(autoincrement())
+  personId   Int      @map("person_id")
+  note       String
+  createdAt  DateTime @map("created_at")
+  person     Person   @relation(fields: [personId], references: [id])
+
+  @@map("notes")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+generator zod {
+  createRelationValuesTypes = true
+  output                    = "../app/generated/zod"  
+  provider                  = "zod-prisma-types"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
